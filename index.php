@@ -18,12 +18,12 @@ $email->Port = 2525;
 $email->Username = 'c0ec0dfbe709d3';
 $email->Password = '152d9093641794';
 
-$email->setFrom('jdmosquerac2@academia.usbbog.edu.co');
+$email->setFrom('juandavidm2015@hotmail.com');
 $email->addAddress('juandavidmc2020@gmail.com');
 
 $email->isHTML(true);
 $email->Subject ='contacto desde el formulario';
-$email->body    ='este es el contenido del mensaje <b>en negrita!</b>1';
+$email->Body    ='este es el contenido del mensaje <b>en negrita!</b>1';
 $email->AltBody ='Este es el contenido del mensaje en texto plano';
 
 $email->send();
