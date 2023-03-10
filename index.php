@@ -1,87 +1,35 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
+require 'PHPMailer/src/Exception.php';
+require 'PHPMailer/src/PHPMailer.php';
+require 'PHPMailer/src/SMTP.php';
+188;
 
+$email = new PHPMailer();
+try{
 
-$connect = mysqli_connect('localhost', 'usb', 'usb2022', 'formulatio');
+$email = new PHPMailer();
+$email->isSMTP();
+$email->Host = 'smtp.mailtrap.io';
+$email->SMTPAuth = true;
+$email->Port = 2525;
+$email->Username = 'c0ec0dfbe709d3';
+$email->Password = '152d9093641794';
 
-$email = isset( $_POST['email'] ) ? $_POST['email'] : '';
-$message = isset( $_POST['message'] ) ? $_POST['message'] : '';
+$email->setFrom('jdmosquerac2@academia.usbbog.edu.co');
+$email->addAddress('juandavidmc2020@gmail.com');
 
-$email_error = '';
-$message_error = '';
+$email->isHTML(true);
+$email->Subject ='contacto desde el formulario';
+$email->body    ='este es el contenido del mensaje <b>en negrita!</b>1';
+$email->AltBody ='Este es el contenido del mensaje en texto plano';
 
-if (count($_POST))
-{ 
-    $errors = 0;
-
-    if ($_POST['email'] == '')
-    {
-        $email_error = 'Please enter an email address';
-        $errors ++;
-    }
-
-    if ($_POST['message'] == '')
-    {
-        $message_error = 'Please enter a message';
-        $errors ++;
-    }
-
-    if ($errors == 0)
-    {
-
-        $query = 'INSERT INTO contact (
-                email,
-                message
-            ) VALUES (
-                "'.addslashes($_POST['email']).'",
-                "'.addslashes($_POST['message']).'"
-            )';
-        mysqli_query($connect, $query);
-
-        $message = 'You have received a contact form submission:
-            
-Email: '.$_POST['email'].'
-Message: '.$_POST['email'];
-
-        mail( 'poveda.geovanny@hotmail.com', 
-            'Contact Form Cubmission',
-            $message );
-
-        header('Location: thankyou.html');
-        die();
-
-    }
+$email->send();
+echo'El mensaje ha sido enviado';
+}catch(Exception $e) {
+    echo'el mensaje no se a podido enviar',$email->ErrorInfo;
 }
 
 ?>
-<!doctype html>
-<html>
-    <head>
-        <title>PHP Contact Form</title>
-    </head>
-    <body>
-    
-        <h1>PHP Contact Form</h1>
-
-        <form method="post" action="">
-        
-            Email Address:
-            <br>
-            <input type="text" name="email" value="<?php echo $email; ?>">
-            <?php echo $email_error; ?>
-
-            <br><br>
-
-            Message:
-            <br>
-            <textarea name="message"><?php echo $message; ?></textarea>
-            <?php echo $message_error; ?>
-
-            <br><br>
-
-            <input type="submit" value="Submit">
-        
-        </form>
-    
-    </body>
-</html>
